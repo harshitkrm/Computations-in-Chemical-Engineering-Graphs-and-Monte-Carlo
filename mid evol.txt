@@ -1,0 +1,156 @@
+Q. flatten-binary-tree-to-linked-list
+
+
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(root==NULL)
+        return;
+        TreeNode* &curr=root;
+        while(curr){
+            if(curr->left)
+            {
+                TreeNode* pred=curr->left;
+                while(pred->right)
+                    pred=pred->right;
+                pred->right=curr->right;
+                curr->right=curr->left;
+                curr->left=NULL;
+            }
+            curr=curr->right;
+        }
+    }
+};
+
+
+
+
+
+Q. stone-game-iii
+
+
+
+vector<int> dp;
+int fun(int l, vector<int>& arr){
+    if(l >= arr.size())
+        return 0;
+    
+    if(dp[l] != -1)
+        return dp[l];
+    
+    int ans = INT_MIN, sf = 0;
+    for(int di = 0; di < 3; di++){
+        int i = l + di;
+        
+        if(i < arr.size()){
+            sf += arr[i];
+            
+            int temp = INT_MAX;
+            if(i+1 < arr.size()){
+                int r = i+1;
+                for(int dj = 0; dj < 3; dj++){
+                    int j = r+dj;
+                    if(j < arr.size()){
+                        temp = min(temp, fun(j+1,arr));
+                    }
+                }
+            }
+            
+            ans = max(ans, sf + (temp == INT_MAX? 0 : temp));
+        }
+    }
+    
+    return dp[l] = ans;
+}
+
+string stoneGameIII(vector<int>& arr) {
+    dp = vector<int> (arr.size(), -1);
+    int ans = fun(0,arr);
+    
+    int sum = 0;
+    for(int x: arr)
+        sum += x;
+    
+    if(sum%2 == 0){
+        if(ans > (sum/2))return "Alice";
+        else if(ans < (sum/2))return "Bob";
+        else return "Tie";
+    } 
+    else{
+        if(sum >= 0){
+            if(ans > (sum/2))return "Alice";
+            else return "Bob";
+        }
+        else{
+            
+            if(ans >= (sum/2))return "Alice";
+            else return "Bob";
+        }
+    }
+    return "";
+}
+
+
+
+
+
+Q. vertical-order-traversal-of-a-binary-tree
+
+
+
+class Solution {
+public:
+    void preorder(TreeNode* root, map<int, vector<pair<int,int> > > &mp, int row, int col){
+       if(!root){
+           return;
+       } 
+        mp[col].push_back({row, root->val});
+        preorder(root->left,mp,row+1, col-1);
+        preorder(root->right,mp,row+1, col+1);
+    }
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int, vector<pair<int,int> > > mp;
+        preorder(root,mp,0,0);
+        vector<vector<int>> ans;
+        for(auto x:mp){
+            sort(x.second.begin(), x.second.end());
+            vector<int> temp;
+            for(auto a:x.second){
+                temp.push_back(a.second);
+            }
+            ans.push_back(temp);
+        }
+        return ans;
+    }
+};
+
+SUMMARY:
+
+
+The study article explores the application of graph theory to the field of plasma chemical reaction engineering, with a specific emphasis on atmospheric pressure plasmas. Here's a summary of it:
+
+The ability of plasma, sometimes called the fourth state of matter, to quickly change energy conditions without the need for equipment that can withstand high pressure or temperatures, makes it useful in a variety of chemical engineering applications. Its lack of selectivity at atmospheric pressure, which makes it difficult to regulate which reactions occur, is a significant obstacle. This work uses graph theory to try and solve this problem.
+
+Mathematical structures made up of nodes (points) joined by edges (lines) are the subject of graph theory. A "reaction network" can be made by visualising species and chemical reactions as nodes and edges, respectively. By visualising the connections between various species and processes, this network aids in the identification of key pathways and possible issues for researchers.
+In order to better understand and optimise plasma chemical reaction engineering, the study investigates the use of graph theory, with a special emphasis on atmospheric pressure plasmas. These plasmas can quickly alter energy conditions without the need for equipment with high pressure or temperature, which makes them useful in a variety of chemical engineering applications. However, the lack of selectivity of atmospheric pressure plasmas poses a substantial hurdle to their use, as it makes it difficult to control which reactions take place.
+
+The researchers suggest modelling the intricate web of chemical reactions involved in plasma chemistry using graph theory, which deals with structures made up of nodes (points) connected by edges (lines), as a solution to this problem. A complete "reaction network" can be created by visualising specific chemical reactions as nodes and the species involved as edges. Through the visualisation of the complex links between many species and processes, this network offers insights into possible pathways and interactions for researchers.
+The study utilises Dijkstra's algorithm, a mathematical technique for determining the shortest paths between nodes in a graph, as one of its primary techniques. Dijkstra's method, when applied to the plasma chemical reaction network, assists in determining which reactions are most likely to occur and which circumstances are conducive to for their development. Furthermore, using the network analysis, the researchers create an algorithm known as OCARINA (Optimal Condition Approaching via Reaction-In-Network Analysis) to determine the ideal conditions for targeted chemical creation.
+
+The study utilizes open-source graph visualization software, Gephi, to visualize the reaction network. By representing reactions and species as nodes and edges with various attributes such as size, color, and label, researchers can gain valuable insights into the complex interactions within the plasma chemical system. The visualizations generated by Gephi help researchers identify patterns, potential bottlenecks, and promising pathways for further investigation.
+
+Nonetheless, the study also recognises a number of shortcomings. The study, for example, makes the assumption that rate coefficients and electron energy or gas temperature follow linear correlations, which might not always hold true in practical situations. Furthermore, the intricacy of plasma chemical systems presents difficulties in the visualisation and interpretation of extensive networks, particularly when taking into account a multitude of species and reactions. Without taking equilibrium reactions into account, the research concentrates on forward reactions. This simplification ignores the possible influence of reversible reactions and dynamic equilibria on the system's overall behaviour, even though it might be appropriate for some plasma systems. Ignoring equilibrium reactions might result in kinetics and reaction pathways being understood insufficiently or incorrectly.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
